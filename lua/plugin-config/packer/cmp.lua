@@ -10,10 +10,10 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),   -- 上翻文档
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),    -- 下翻文档
-    ['<C-n>'] = cmp.mapping.complete(),    -- 手动触发补全
-    ['<C-e>'] = cmp.mapping.abort(),           -- 取消补全
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),           -- 上翻文档
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),            -- 下翻文档
+    ['<C-n>'] = cmp.mapping.complete(),                -- 手动触发补全
+    ['<C-e>'] = cmp.mapping.abort(),                   -- 取消补全
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- 回车确认
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -36,11 +36,11 @@ cmp.setup({
     end, { 'i', 's' }),
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },     -- LSP 补全
-    { name = 'luasnip' },      -- snippet 补全
+    { name = 'nvim_lsp' }, -- LSP 补全
+    { name = 'luasnip' },  -- snippet 补全
   }, {
-    { name = 'buffer' },       -- buffer 补全
-    { name = 'path' },         -- 路径补全
+    { name = 'buffer' },   -- buffer 补全
+    { name = 'path' },     -- 路径补全
   }),
 })
 
@@ -50,24 +50,18 @@ local lsp_data = require("data.plugin_data").lsp_data
 local servers = lsp_data
 
 for _, lsp in ipairs(servers) do
-    vim.lsp.config(
-        lsp,
-        {
-            capabilities = capabilities
-        }
-    )
+  vim.lsp.config(
+    lsp,
+    {
+      capabilities = capabilities
+    }
+  )
 end
 
 lsp_signature.setup({
-    bind = true,
-    floating_window = true,
-    hint_enable = false,
-    floating_window_above_cur_line = true,
-    handler_opts = { border = "rounded" },
+  bind = true,
+  floating_window = true,
+  hint_enable = false,
+  floating_window_above_cur_line = true,
+  handler_opts = { border = "rounded" },
 })
-
-
-
-
-
-

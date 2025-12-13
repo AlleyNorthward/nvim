@@ -72,7 +72,8 @@ map("v", "p", '"_dp', opts)
 -- 全屏复制(复制到粘贴板中)
 -- map("n", "SY", "ggVG\"+y", opts)
 map("n", "SY", func.copy_mode_n, opts)
-map("v","SY", func.copy_mode_v, opts)
+map("v", "SY", function() func.copy_mode_v(1) end, opts)
+map("v", "y", function() func.copy_mode_v(0) end, opts)
 -- 粘贴粘贴板内容
 map("n", "SP", "\"+p", opts)
 
@@ -82,7 +83,7 @@ map("n", "SP", "\"+p", opts)
 -- map("i", "<C-_>", function() func.smart_comment_mode_i(comment_map) end, opts)
 -- map("v", "<C-_>", function() func.smart_comment_mode_v(comment_map) end, opts)
 
-map("n", "<C-_>", "gcc", {remap = true})
+map("n", "<C-_>", "gcc", { remap = true })
 map("i", "<C-_>", func.smart_easily_comment_mode_i)
 map("v", "<C-_>", func.smart_easily_comment_mode_v)
 -- 回车后, 自动匹配
@@ -91,9 +92,4 @@ map("i", "<CR>", func.CR_map, { expr = true })
 map("n", "G", func.G_map, opts)
 map("v", "G", func.G_map, opts)
 
-
-
-
-
-
-
+map("n", "<leader><CR>", function() func.new_line(12) end)

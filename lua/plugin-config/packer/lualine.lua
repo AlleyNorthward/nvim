@@ -6,7 +6,7 @@ print(lualine_data[1])
 
 local status, lualine = pcall(require, "lualine")
 if not status then
-    vim.notify("没有找到 lualine")
+  vim.notify("没有找到 lualine")
   return
 end
 
@@ -18,7 +18,7 @@ lualine.setup({
     -- https://github.com/ryanoasis/powerline-extra-symbols
     section_separators = { left = " ", right = "" },
   },
-  extensions = {"nvim-tree","toggleterm" },
+  extensions = { "nvim-tree", "toggleterm" },
   sections = {
     lualine_c = {
       "filename",

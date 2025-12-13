@@ -10,19 +10,15 @@ local pairs_close = data.pairs_close
 local pairs_ = data.pairs
 
 for open, close in pairs(pairs_open) do
-    map("i", open, function() return func.auto_close(open, close) end, { expr = true })
+  map("i", open, function() return func.auto_close(open, close) end, { expr = true })
 end
 
 for key, char in pairs(pairs_close) do
-    map("i", key, function() return func.auto_move(key, char) end, { expr = true })
+  map("i", key, function() return func.auto_move(key, char) end, { expr = true })
 end
 
 for _, quote in ipairs(pairs_open_same) do
-    map("i", quote, function() return func.auto_close_same(quote) end, { expr = true })
+  map("i", quote, function() return func.auto_close_same(quote) end, { expr = true })
 end
 
 map("i", "<BS>", function() return func.auto_delete(pairs_) end, { expr = true })
-
-
-
-

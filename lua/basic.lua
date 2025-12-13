@@ -47,11 +47,10 @@ o.wildmenu = true
 --vim.o.shortmess = vim.o.shortmess .. 'c'
 o.shortmess:append("c")
 -- 补全最多显示10行
-o.pumheight = 10
+o.pumheight = 5
 -- 样式
 o.background = "dark"
 o.termguicolors = true
-
 
 -- 使用相对行号
 wo.number = true
@@ -70,14 +69,14 @@ o.listchars = "space:."
 
 
 -- 缩进, 一个tab等于四个空格
-o.tabstop = 4
-bo.tabstop = 4
-o.softtabstop = 4
+o.tabstop = 2
+bo.tabstop = 2
+o.softtabstop = 2
 o.shiftround = true
 
 -- >> << 时移动长度
-o.shiftwidth = 4
-bo.shiftwidth = 4
+o.shiftwidth = 2
+bo.shiftwidth = 2
 -- 空格代替tab
 o.expandtab = true
 bo.expandtab = true
