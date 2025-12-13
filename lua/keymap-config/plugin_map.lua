@@ -45,7 +45,6 @@ module.mapTree = function(bufnr) -- 这里的回调函数, 用1表示吧
     map("n", "v", func.open_file_v, usebuffer)
 end
 
-
 return module
 
 

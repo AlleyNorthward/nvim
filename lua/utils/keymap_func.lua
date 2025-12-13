@@ -113,7 +113,80 @@ utils.copy_mode_v = function ()
     set_cursor_to_chosed_last_line()
 end
 
+utils.auto_close = function (open, close)
+    if (vim.bo.filetype == "cpp" or vim.bo.filetype == "hpp" or vim.bo.filetype == "c" or vim.bo.filetype == "h") and open == "<" then
+        return open
+    end
+
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.fn.col('.') - 1
+
+    local next_char = line:sub(col + 1, col + 1)
+
+    if next_char == "" or next_char:match("%s") or next_char == close then
+        return open .. close .. "<Left>"
+    else
+        return open
+    end
+end
+
+utils.auto_move = function (key, char)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    row = row - 1
+    col = col + 1
+    local line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
+
+    if line:sub(col, col) == char then
+        return "<Right>"
+    else
+        return key
+    end
+end
+
+utils.auto_close_same = function (quote)
+    if vim.bo.filetype == "ps1" and quote == "`" then
+        return quote
+    end
+
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    row = row - 1
+    col = col + 1
+    local line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
+    local under = line:sub(col, col)
+    local prev = line:sub(col - 1, col - 1)
+
+    if under == quote and prev ~= quote then
+        return "<Right>"
+    elseif under == quote and prev == quote then
+        return quote
+    end
+
+    if (under == "" or under:match("%s")) and prev ~= quote then
+        return quote .. quote .. "<Left>"
+    else
+        return quote
+    end
+end
+
+utils.auto_delete = function (pairs_)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+
+    if col == 0 then
+        return "<BS>"
+    end
+
+    local line = vim.api.nvim_get_current_line()
+    local left = line:sub(col, col)
+    local right = line:sub(col + 1, col + 1)
+
+    if pairs_[left] == right then
+        return "<BS><Del>"
+    end
+    return "<BS>"
+end
+
 return utils
+
 
 
 
