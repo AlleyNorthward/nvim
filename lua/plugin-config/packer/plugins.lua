@@ -34,6 +34,7 @@ packer.startup(
         use 'hrsh7th/cmp-path'                 -- 路径补全
         use 'L3MON4D3/LuaSnip'                 -- snippet 引擎
         use 'saadparwaiz1/cmp_luasnip'         -- snippet 补全源
+        use 'ray-x/lsp_signature.nvim'
     end
 )
 

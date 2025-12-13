@@ -9,10 +9,10 @@ end
 -- 本地实现的局部函数
 
 local function on_tree()
--- 应用函数:open_file, open_file_v
+    -- 应用函数:open_file, open_file_v
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         local buf = vim.api.nvim_win_get_buf(win)
-        if vim.api.nvim_buf_get_name(buf):match("NvimTree_")then
+        if vim.api.nvim_buf_get_name(buf):match("NvimTree_") then
             vim.api.nvim_set_current_win(win)
             break
         end
@@ -53,7 +53,7 @@ utils.auto_delete_bufferLine = function()
 end
 
 utils.auto_delete_bufferLine_two = function()
-    vim.notify("Quit: Esc. ", vim.log.levels.INFO) 
+    vim.notify("Quit: Esc. ", vim.log.levels.INFO)
 
     while true do
         vim.cmd("BufferLinePickClose")
@@ -70,4 +70,3 @@ utils.auto_delete_bufferLine_two = function()
 end
 
 return utils
-

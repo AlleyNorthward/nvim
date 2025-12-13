@@ -1,8 +1,8 @@
 return {
-    cmd = { "lua-language-server" }, -- 如果在 PATH，直接写命令即可
-    filetypes = { "lua" },
-    root_dir = vim.fs.dirname(vim.fs.find({ '.git', 'init.lua' }, { upward = true })[1]),
-    settings = {
+cmd = { "lua-language-server" }, -- 如果在 PATH，直接写命令即可
+filetypes = { "lua" },
+root_dir = vim.fs.dirname(vim.fs.find({ '.git', 'init.lua' }, { upward = true })[1]),
+settings = {
         Lua = {
             runtime = {
                 version = "LuaJIT",

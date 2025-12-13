@@ -1,5 +1,6 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
+local lsp_signature = require("lsp_signature")
 
 cmp.setup({
   snippet = {
@@ -44,7 +45,7 @@ cmp.setup({
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
+capabilities.textDocument.completion.completionItem.snippetSupport = false
 local lsp_data = require("data.plugin_data").lsp_data
 local servers = lsp_data
 
@@ -57,7 +58,13 @@ for _, lsp in ipairs(servers) do
     )
 end
 
-
+lsp_signature.setup({
+    bind = true,
+    floating_window = true,
+    hint_enable = false,
+    floating_window_above_cur_line = true,
+    handler_opts = { border = "rounded" },
+})
 
 
 

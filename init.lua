@@ -9,4 +9,3 @@ vim.cmd [[
     hi foldcolumn guibg=none
     hi endofbuffer guibg=none
 ]]
-

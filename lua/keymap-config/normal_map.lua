@@ -1,18 +1,17 @@
 local func = require("utils.keymap_func")
 local data = require("data.keymap_data")
 local comment_map = data.comment_map
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 local map = vim.keymap.set
-local opts = {noremap = true, silent = true}
+local opts = { noremap = true, silent = true }
 
 -- 一.映射部分
 -- (1)s是替换字符, 替换后进入插入模式, 比较鸡肋, 修改的话, 用r比较好.
 map("n", "s", "", opts)
 -- (2) S是删除一行, 并进入插入模式.有类似的
-map("n", "S", "", opts) 
+map("n", "S", "", opts)
 -- (3) L比较奇怪吧, 去末尾, 取消了,可以n+j,可以G
 map("n", "L", "", opts)
 -- (4) H是去头部, 跟gg类似, 取消了
@@ -25,7 +24,7 @@ map("n", "J", "", opts)
 -- 二.分屏相关快捷键这里相关的只用S, 本意是分屏, 其余的是
 -- (1) windows 分屏快捷键
 map("n", "sv", ":vsp<CR>", opts)
-map("n", "sh", ":sp<CR>", opts) 
+map("n", "sh", ":sp<CR>", opts)
 -- (2) 关闭当前
 map("n", "so", "<C-w>c", opts)
 -- (3) 关闭其他
@@ -52,10 +51,6 @@ map("n", "L", "<C-w>l", opts)
 map("n", "<leader>t", ":sp | terminal<CR>", opts)
 map("n", "<leader>vt", ":vsp | terminal<CR>", opts)
 map("t", "<Esc>", "<C-\\><C-n>", opts)
-map("t", "H", [[ <C-\><C-N><C-w>h ]], opts)
-map("t", "J", [[ <C-\><C-N><C-w>j ]], opts)
-map("t", "K", [[ <C-\><C-N><C-w>k ]], opts)
-map("t", "L", [[ <C-\><C-N><C-w>l ]], opts)
 
 -- 四.Visule模式下快捷键
 -- (1) visual模式下缩进代码
@@ -75,21 +70,26 @@ map("n", "<C-d>", "9j", opts)
 map("v", "p", '"_dp', opts)
 
 -- 全屏复制(复制到粘贴板中)
-map("n", "SY", "ggVG\"+y", opts)
+-- map("n", "SY", "ggVG\"+y", opts)
+map("n", "SY", func.copy_mode_n, opts)
+map("v","SY", func.copy_mode_v, opts)
 -- 粘贴粘贴板内容
 map("n", "SP", "\"+p", opts)
 
+
 -- 注释相关按键绑定
-map("n", "<C-_>", function() func.smart_comment_mode_n(comment_map) end, opts)
-map("i", "<C-_>", function() func.smart_comment_mode_i(comment_map) end, opts)
+-- map("n", "<C-_>", function() func.smart_comment_mode_n(comment_map) end, opts)
+-- map("i", "<C-_>", function() func.smart_comment_mode_i(comment_map) end, opts)
+-- map("v", "<C-_>", function() func.smart_comment_mode_v(comment_map) end, opts)
+
+map("n", "<C-_>", "gcc", {remap = true})
+map("i", "<C-_>", func.smart_easily_comment_mode_i)
+map("v", "<C-_>", func.smart_easily_comment_mode_v)
 -- 回车后, 自动匹配
-map("i", "<CR>", func.CR_map, {expr = true})
+map("i", "<CR>", func.CR_map, { expr = true })
 
-
-
-
-
-
+map("n", "G", func.G_map, opts)
+map("v", "G", func.G_map, opts)
 
 
 

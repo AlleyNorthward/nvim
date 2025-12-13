@@ -14,7 +14,7 @@ g.loaded_netrwPlugin = 1
 
 -- utf8
 o.fileencoding = 'utf-8'
--- jkhl 移动时光标周围保留8行
+-- jkhl 移动时光标周围保留12行
 o.scrolloff = 12
 o.sidescrolloff = 12
 -- 搜索大小写不敏感, 除非包含大写
@@ -59,7 +59,7 @@ wo.relativenumber = true
 -- 高亮所在行
 wo.cursorline = true
 -- 右侧参考线, 超过表示代码太长了, 考虑换行
-wo.colorcolumn = "80"
+-- wo.colorcolumn = "80"
 
 -- 不可见字符的显示, 这里只把空格显示为一个点
 o.list = true
@@ -78,7 +78,6 @@ o.shiftround = true
 -- >> << 时移动长度
 o.shiftwidth = 4
 bo.shiftwidth = 4
-    
 -- 空格代替tab
 o.expandtab = true
 bo.expandtab = true
@@ -94,14 +93,10 @@ bo.autoread = true
 
 -- 禁止折行
 wo.wrap = false
-wo.cursorline = true
-wo.number = true
-wo.relativenumber = true
-wo.colorcolumn = "80"
 
 -- 光标在行首尾时<left><right>可以跳到下一行
 -- vim.o.whichwrap = '<,>,[,]' -- []代表hl, 测试了不行, 还是就注释掉吧
-o.whichwrap = '<,>' 
+o.whichwrap = '<,>'
 
 -- vim.opt.termguicolors = true
 

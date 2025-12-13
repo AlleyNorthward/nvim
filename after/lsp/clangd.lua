@@ -1,3 +1,44 @@
+-- 下面呢, 是我期望能导入文件, 但是很可惜, 似乎无法这么做. 所以, 只能在这个文件里单独写了.
+
+-- local function auto_add_path()
+--     local this_path = debug.getinfo(1, "S").source:sub(2, -2):match("(.*[/\\])"):sub(1, -2):match("(.*[/\\])")
+--     package.path = package.path
+--     ..";"..this_path.."utils\\?.lua"
+--     print(this_path)
+--     print(package.path)
+-- end
+-- auto_add_path()
+
+-- local ok, path = pcall(require, "path")
+-- if not ok then
+--     vim.notify("没有找到path_模块!", vim.log.levels.WARN)
+--     return
+-- end
+-- vim.notify("成功导入path_模块!", vim.log.levels.Info)
+local compile = {}
+local os_name = jit.os
+
+if os_name == "Windows" then
+    compile.cpp1 = "F:/Qt/Qt.6.9/Tools/mingw1310_64/bin/g++.exe"
+    compile.cpp2 = "C:/mingw64/bin/g++.exe"
+    compile.cpp3 = "E:/StrawberryPerl/c/bin/g++.exe"
+
+    compile.c1 = "F:/Qt/Qt.6.9/Tools/mingw1310_64/bin/gcc.exe"
+    compile.c2 = "C:/mingw64/bin/gcc.exe"
+    compile.c3 = "E:/StrawberryPerl/c/bin/gcc.exe"
+elseif os_name == "Linux" then
+    compile.cpp1 = ""
+
+    compile.c1 = ""
+elseif os_name == "OSX" then
+    compile.cpp1 = ""
+
+    compile.c1 = ""
+end
+
+local cpp_compile = compile.cpp1
+local c_compile = compile.c1
+
 local function switch_source_header(bufnr, client)
     local method_name = 'textDocument/switchSourceHeader'
     ---@diagnostic disable-next-line:param-type-mismatch
@@ -53,7 +94,7 @@ return {
         "--completion-style=detailed",
         "--header-insertion=iwyu",
         "--pch-storage=memory",
-        "--query-driver=C:/mingw64/bin/g++.exe,C:/mingw64/bin/gcc.exe"
+        "--query-driver="..c_compile..","..cpp_compile,
     },
     on_attach = function(client, bufnr)
         require("keymap-config.keymap_interface").lsp_map.on_attach(client, bufnr)

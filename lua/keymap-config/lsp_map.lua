@@ -1,9 +1,8 @@
 local M = {}
 
 function M.on_attach(client, bufnr)
-
     local map = vim.keymap.set
-    local opts = { noremap = true, silent = true, buffer = bufnr}
+    local opts = { noremap = true, silent = true, buffer = bufnr }
     map("n", "<leader>rn", vim.lsp.buf.rename, opts)
     map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 
@@ -27,12 +26,3 @@ function M.on_attach(client, bufnr)
 end
 
 return M
-
-
-
-
-
-
-
-
-
