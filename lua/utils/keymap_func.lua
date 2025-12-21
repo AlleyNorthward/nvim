@@ -1,3 +1,5 @@
+local func = require("utils/generic_func")
+
 local utils = {}
 
 -- 本地相关变量
@@ -77,11 +79,31 @@ utils.CR_map = function()
   local prev = line:sub(col - 1, col - 1)
   local next = line:sub(col, col)
 
-  if prev == "(" and next == ")" then
+  local infos = {
+    ["("] = ")",
+    ["{"] = "}"
+  }
+
+  if infos[prev] == next then
     return "<CR><Esc>O"
   end
 
-  if prev == "{" and next == "}" then
+  return "<CR>"
+end
+
+utils.CR_map_ = function()
+  -- 这个怎么说呢, 直接用lua接口, 不会自动匹配换行, 上面的vim接口, 可以匹配, 所以还是使用上面的吧.
+  local prev, next, _ = func.get_cursor_chars()
+  local file_type = vim.bo.filetype
+  local infos = {
+    ["("] = ")",
+    ["{"] = "}"
+  }
+
+  if file_type == 'python' then
+    return "<CR>"
+  end
+  if infos[prev] == next then
     return "<CR><Esc>O"
   end
   return "<CR>"
@@ -118,7 +140,8 @@ utils.copy_mode_v = function(options)
 end
 
 utils.auto_close = function(open, close)
-  if (vim.bo.filetype == "cpp" or vim.bo.filetype == "hpp" or vim.bo.filetype == "c" or vim.bo.filetype == "h") and open == "<" then
+  local file_type = vim.bo.filetype
+  if (file_type == "cpp" or file_type == "hpp" or file_type == "c" or file_type == "h" or file_type == "python") and open == "<" then
     return open
   end
 

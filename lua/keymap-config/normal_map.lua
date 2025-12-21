@@ -87,7 +87,7 @@ map("n", "<C-_>", "gcc", { remap = true })
 map("i", "<C-_>", func.smart_easily_comment_mode_i)
 map("v", "<C-_>", func.smart_easily_comment_mode_v)
 -- 回车后, 自动匹配
-map("i", "<CR>", func.CR_map, { expr = true })
+map("i", "<CR>", func.CR_map, {expr = true })
 
 map("n", "G", func.G_map, opts)
 map("v", "G", func.G_map, opts)

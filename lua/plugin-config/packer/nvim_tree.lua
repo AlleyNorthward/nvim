@@ -4,7 +4,7 @@ if not nvim_tree_status then
   return
 end
 
-keybindings = require("keymap-config.keymap_interface").plugin_keys
+local keybindings = require("keymap-config.keymap_interface").plugin_keys
 
 local on_attach = keybindings.mapTree
 
