@@ -50,12 +50,13 @@ local lsp_data = require("data.plugin_data").lsp_data
 local servers = lsp_data
 
 for _, lsp in ipairs(servers) do
-  vim.lsp.config(
-    lsp,
-    {
-      capabilities = capabilities
-    }
-  )
+  if lsp == "html" then
+    local caps = vim.deepcopy(capabilities)
+    caps.textDocument.completion.completionItem.snippetSupport = true
+    vim.lsp.config(lsp, { capabilities = caps })
+  else
+    vim.lsp.config(lsp, { capabilities = capabilities })
+  end
 end
 
 lsp_signature.setup({
