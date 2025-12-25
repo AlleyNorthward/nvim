@@ -93,3 +93,6 @@ map("n", "G", func.G_map, opts)
 map("v", "G", func.G_map, opts)
 
 map("n", "<leader><CR>", function() func.new_line(12) end)
+-- markdown 模式下, 可以换行.
+map('v', '<leader>r', ":normal! A<br><CR>", opts)
+map('v', '<leader>e', ":normal! I&emsp;&emsp;<CR>", opts)

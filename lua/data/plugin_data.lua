@@ -15,6 +15,7 @@ data.lsp_data = {
   "clangd",
   "jdtls",
   "sqlls",
+  "html"
 }
 
 function data.delete(name, isnotify)

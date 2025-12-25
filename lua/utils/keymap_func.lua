@@ -75,6 +75,7 @@ end
 utils.CR_map = function()
   local col = vim.fn.col(".")
   local line = vim.fn.getline(".")
+  local file_type = vim.bo.filetype
 
   local prev = line:sub(col - 1, col - 1)
   local next = line:sub(col, col)
@@ -103,9 +104,11 @@ utils.CR_map_ = function()
   if file_type == 'python' then
     return "<CR>"
   end
+
   if infos[prev] == next then
     return "<CR><Esc>O"
   end
+
   return "<CR>"
 end
 
