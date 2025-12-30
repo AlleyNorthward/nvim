@@ -25,3 +25,22 @@ vim.api.nvim_create_user_command(
   end,
   {}
 )
+
+vim.api.nvim_create_user_command(
+  'GenerateCodeBlock',
+  function(opts)
+    local pram = opts.args
+    local block = "~~~"
+    local lines = {
+      string.format("%s%s", block, pram),
+      "",
+      block
+    }
+    vim.api.nvim_put(lines, 'c', true, true)
+
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    vim.api.nvim_win_set_cursor(0, { row - 1, 0 })
+    vim.cmd("startinsert")
+  end,
+  { nargs = 1 }
+)
