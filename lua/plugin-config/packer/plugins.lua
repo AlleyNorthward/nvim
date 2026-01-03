@@ -35,6 +35,12 @@ packer.startup(
     use 'L3MON4D3/LuaSnip'             -- snippet 引擎
     use 'saadparwaiz1/cmp_luasnip'     -- snippet 补全源
     use 'ray-x/lsp_signature.nvim'
+    use {"windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = function()
+        require("nvim-autopairs").setup {}
+    end
+}
   end
 )
 
