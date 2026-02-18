@@ -13,9 +13,9 @@ data.lsp_data = {
   "lua_ls",
   "pyright",
   "clangd",
-  "jdtls",
+  -- "jdtls",
   -- "sqlls",
-  "html"
+  -- "html"
 }
 
 function data.delete(name, isnotify)

@@ -88,11 +88,12 @@ end
 return {
   cmd = {
     "clangd",
+    "--header-insertion=never",
+    -- "--header-insertion=iwyu",
     "--background-index",
     "--clang-tidy",
     "--all-scopes-completion",
     "--completion-style=detailed",
-    "--header-insertion=iwyu",
     "--pch-storage=memory",
     "--query-driver=" .. c_compile .. "," .. cpp_compile,
   },
