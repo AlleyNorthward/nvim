@@ -115,3 +115,7 @@ o.showbreak = "↳"
 -- vim.opt.fillchars = {
 --     eob = " "
 -- }
+
+vim.cmd([[
+  cnoreabbrev <expr> W getcmdtype() == ':' && getcmdline() ==# 'W' ? 'w' : 'W'
+]])

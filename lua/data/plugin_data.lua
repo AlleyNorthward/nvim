@@ -13,6 +13,7 @@ data.lsp_data = {
   "lua_ls",
   "pyright",
   "clangd",
+  "ts_ls"
   -- "jdtls",
   -- "sqlls",
   -- "html"
