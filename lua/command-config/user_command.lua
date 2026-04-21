@@ -148,21 +148,212 @@ vim.api.nvim_create_user_command(
   { nargs = "?" }
 )
 
-vim.api.nvim_create_user_command(
-  'GenerateCodeBlock',
-  function(opts)
-    local pram = opts.args
-    local block = "~~~"
-    local lines = {
-      string.format("%s%s", block, pram),
-      "",
-      block,
-    }
-    vim.api.nvim_put(lines, 'c', true, true)
+vim.api.nvim_create_user_command("GenerateDetails", function(opts)
+  local raw = vim.trim(opts.args)
+  local parts = vim.split(raw, "%s+")
+  local level = tonumber(parts[1])
 
-    local row = vim.api.nvim_win_get_cursor(0)[1]
-    vim.api.nvim_win_set_cursor(0, { row - 1, 0 })
-    vim.cmd("startinsert")
-  end,
-  { nargs = 1 }
-)
+  if not level or level < 1 or level > 4 then
+    vim.notify("Level must be 1-4", vim.log.levels.ERROR)
+    return
+  end
+
+  table.remove(parts, 1)
+  local title = table.concat(parts, " ")
+
+  if title == "" then
+    vim.notify("Title cannot be empty", vim.log.levels.ERROR)
+    return
+  end
+
+  local emoji_map = { "🟩", "🟦", "🟨", "🟥" }
+  local emoji = emoji_map[level]
+
+  local lines = {
+    "<details>",
+    "  <summary><strong>" .. emoji .. " " .. title .. "</strong></summary>",
+    "",
+    "",
+    "",
+    "</details>",
+  }
+
+  local buf = 0
+  local row = vim.api.nvim_win_get_cursor(0)[1] -- 1-based
+  local idx = row - 1                          -- 0-based
+
+  vim.api.nvim_buf_set_lines(buf, idx, idx, false, lines)
+  vim.api.nvim_win_set_cursor(0, { idx + 4, 0 })
+  vim.cmd("startinsert")
+end, { nargs = "+" })
+
+vim.api.nvim_create_user_command("GenerateForm", function(opts)
+  local args = vim.split(vim.trim(opts.args), "%s+")
+  local rows = tonumber(args[1])
+  local cols = tonumber(args[2])
+
+  if not rows or not cols or rows < 1 or cols < 1 then
+    vim.notify("Usage: GenerateForm <rows> <cols>", vim.log.levels.ERROR)
+    return
+  end
+
+  local buf = 0
+  local cur = vim.api.nvim_win_get_cursor(0)[1]
+  local idx = cur - 1
+
+  local lines = {}
+
+  table.insert(lines, "<div align=\"center\">")
+  table.insert(lines, "")
+
+  do
+    local t = {}
+    for i = 1, cols do
+      t[i] = ""
+    end
+    table.insert(lines, "|" .. table.concat(t, "|") .. "|")
+  end
+
+  do
+    local t = {}
+    for i = 1, cols do
+      t[i] = ":---:"
+    end
+    table.insert(lines, "|" .. table.concat(t, "|") .. "|")
+  end
+
+  for r = 1, rows do
+    local t = {}
+    for c = 1, cols do
+      t[c] = ""
+    end
+    table.insert(lines, "|" .. table.concat(t, "|") .. "|")
+  end
+
+  table.insert(lines, "")
+  table.insert(lines, "</div>")
+
+  vim.api.nvim_buf_set_lines(buf, idx, idx, false, lines)
+  vim.api.nvim_win_set_cursor(0, { idx + 3, 1 })
+  vim.cmd("normal! li")
+  vim.cmd("startinsert")
+end, { nargs = "+" })
+
+vim.api.nvim_create_user_command("CreateMappingForm", function()
+  local buf = 0
+  local cur = vim.api.nvim_win_get_cursor(0)[1]
+  local idx = cur - 1
+
+  local lines = {
+    [[<div align="center">]],
+    "",
+    "| key | value |",
+    "|:---:|:---:|",
+    "| id | |",
+    "| 知识与理解 | |",
+    "| 题目汇总 | |",
+    "| 做题汇总 | |",
+    "| 创建时间 | |",
+    "| 关联Mapping | |",
+    "",
+    "</div>"
+  }
+
+  vim.api.nvim_buf_set_lines(buf, idx, idx, false, lines)
+  vim.api.nvim_win_set_cursor(0, { idx + 5, 6 })
+  vim.cmd("startinsert")
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("CreatePracticeForm", function()
+  local buf = 0
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+
+  local function trim(s)
+    return (s:gsub("%s+$", ""))
+  end
+
+  local function ends_with_comma(s)
+    return s:match(",%s*$") ~= nil
+  end
+
+  local function is_object_closing_line(s)
+    return s:match("^%s*}%s*$") ~= nil
+  end
+
+  local prev_line_nr = row - 2
+
+  if prev_line_nr >= 0 then
+    local prev_line = vim.api.nvim_buf_get_lines(buf, prev_line_nr, prev_line_nr + 1, false)[1]
+
+    if prev_line then
+      local t = trim(prev_line)
+
+      if is_object_closing_line(t) and not ends_with_comma(t) then
+        vim.api.nvim_buf_set_lines(buf, prev_line_nr, prev_line_nr + 1, false, {
+          t .. ","
+        })
+      end
+    end
+  end
+
+  local idx = row - 1
+
+  local lines = {
+    "  {",
+    '    "id": ,',
+    '    "question": [],',
+    '    "answer": []',
+    "  }",
+  }
+
+  vim.api.nvim_buf_set_lines(buf, idx, idx, false, lines)
+
+  local target_row = idx + 1
+  local line = vim.api.nvim_buf_get_lines(buf, target_row, target_row + 1, false)[1]
+
+  local col_start = line:find('"id"')
+  if col_start then
+    local cursor_col = col_start - 1 + #'    "id": '
+    vim.api.nvim_win_set_cursor(0, { target_row + 1, cursor_col })
+  end
+
+  vim.cmd("startinsert")
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("CreatePlan", function()
+  local buf = 0
+  local cur = vim.api.nvim_win_get_cursor(0)[1]
+  local idx = cur - 1
+
+  local prefix = "- 目标:"
+
+  local lines = {
+    prefix,
+    "- [ ] 是否完成",
+    "- 预估: `h`",
+    "- 实际:",
+    "- 效率评分: /10",
+    "- 专注度: /10",
+    "- 理解度: /10",
+    "- 问题:",
+  }
+
+  vim.api.nvim_buf_set_lines(buf, idx, idx, false, lines)
+
+  local target_line = idx + 1
+
+  local line = vim.api.nvim_buf_get_lines(buf, target_line - 1, target_line, false)[1]
+
+  local col = string.find(line, ":")
+  if col then
+    col = col
+  else
+    col = #line
+  end
+
+  vim.api.nvim_win_set_cursor(0, { target_line, col })
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("InsertTime", function()
+  vim.api.nvim_put({ os.date("%Y-%m-%d %H:%M:%S") }, "c", true, true)
+end, {})
